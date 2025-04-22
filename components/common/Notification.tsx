@@ -38,7 +38,7 @@ const Container = styled.div<{ type: NotificationType; exiting: boolean }>`
   animation: ${(props) => (props.exiting ? slideOut : slideIn)} 0.3s ease;
 `;
 
-const Notification: FC<NotificationProps> = ({ id, type = 'info', message, duration = 4000, onClose }) => {
+export const Notification: FC<NotificationProps> = ({ id, type = 'info', message, duration = 4000, onClose }) => {
   const [exiting, setExiting] = React.useState(false);
   useEffect(() => {
     const timer = setTimeout(() => setExiting(true), duration);
@@ -56,5 +56,3 @@ const Notification: FC<NotificationProps> = ({ id, type = 'info', message, durat
     </Container>
   );
 };
-
-export default Notification;

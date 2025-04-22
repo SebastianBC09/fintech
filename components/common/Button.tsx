@@ -116,5 +116,3 @@ export const Button: FC<ButtonProps> = ({children, variant = 'primary', size = '
     </StyledButton>
 );
 
-export default Button;
-

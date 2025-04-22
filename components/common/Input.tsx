@@ -48,5 +48,3 @@ export const Input: React.FC<InputProps> = ({ label, id, error, ...props }) => {
     </Wrapper>
   );
 };
-
-export default Input;

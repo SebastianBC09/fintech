@@ -46,7 +46,7 @@ const ButtonStyled = styled.button`
   margin-top: auto;
 `;
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => (
+export const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => (
   <Card role="region" aria-label={product.name}>
     <ImageWrapper>
       <img src={product.imageUrl} alt={product.name} style={{ maxHeight: '100%', maxWidth: '100%' }} />
@@ -61,5 +61,3 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => 
     </Content>
   </Card>
 );
-
-export default ProductCard;

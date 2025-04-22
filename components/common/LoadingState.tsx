@@ -43,5 +43,3 @@ export const LoadingState: React.FC<LoadingStateProps> = ({ fullPage = false, me
     <Message>{message}</Message>
   </Wrapper>
 );
-
-export default LoadingState;

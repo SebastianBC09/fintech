@@ -23,7 +23,7 @@ const TabBtn = styled.button<{ selected: boolean }>`
   &:focus { outline: none; box-shadow: 0 0 0 2px rgba(15,76,129,0.5); }
 `;
 
-const TabFilter: React.FC<TabFilterProps> = ({ tabs, selectedId, onSelect }) => {
+export const TabFilter: React.FC<TabFilterProps> = ({ tabs, selectedId, onSelect }) => {
   const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>, idx: number) => {
     if (e.key === 'ArrowRight') {
       const next = (idx + 1) % tabs.length;
@@ -52,5 +52,3 @@ const TabFilter: React.FC<TabFilterProps> = ({ tabs, selectedId, onSelect }) => 
     </TabList>
   );
 };
-
-export default TabFilter;

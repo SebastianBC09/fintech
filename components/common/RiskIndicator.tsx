@@ -33,7 +33,7 @@ const TextRI = styled.span`
   color: #424242;
 `;
 
-const RiskIndicator: React.FC<RiskIndicatorProps> = ({ level, showText = true }) => {
+export const RiskIndicator: React.FC<RiskIndicatorProps> = ({ level, showText = true }) => {
   const { text, value } = levelMap[level];
   return (
     <ContainerRI aria-label={`Nivel de riesgo: ${text}`}>
@@ -46,5 +46,3 @@ const RiskIndicator: React.FC<RiskIndicatorProps> = ({ level, showText = true })
     </ContainerRI>
   );
 };
-
-export default RiskIndicator;
