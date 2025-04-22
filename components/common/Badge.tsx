@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
 
 export type BadgeVariant = 'category' | 'status' | 'new' | 'promoted';

@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { FC, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -88,7 +88,7 @@ export const Header: FC = () => {
           <MenuItem><Link href="/">Inicio</Link></MenuItem>
           <MenuItem><Link href="/#productos">Productos</Link></MenuItem>
           <MenuItem><Link href="/#nosotros">Nosotros</Link></MenuItem>
-          <MenuItem><Link href="/login">Acceder</Link></MenuItem>
+          <MenuItem><Link href="/#login">Acceder</Link></MenuItem>
         </Menu>
       </Nav>
     </HeaderContainer>
