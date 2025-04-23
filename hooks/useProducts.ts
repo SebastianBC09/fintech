@@ -1,67 +1,108 @@
 'use client';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Product } from '@/types/product';
 import { Category } from '@/types/category';
+import { products as mockProducts } from '@/data/Products';
 
 export default function useProducts() {
-  const [all, setAll] = useState<Product[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [product, setProduct] = useState<Product | null>(null);
+  const allProducts = useMemo(() => mockProducts, []);
+
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const abortCtrl = useRef<AbortController | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  useEffect(() => {
-    abortCtrl.current = new AbortController();
-    setIsLoading(true);
-    fetch('/api/products', { signal: abortCtrl.current.signal })
-      .then(res => {
-        if (!res.ok) throw new Error('Error cargando productos');
-        return res.json() as Promise<Product[]>;
-      })
-      .then(data => {
-        setAll(data);
-        setProducts(data);
-        setError(null);
-      })
-      .catch(err => {
-        if (err.name !== 'AbortError') setError(err.message);
-      })
-      .finally(() => setIsLoading(false));
-    return () => {
-      abortCtrl.current?.abort();
-    };
+  const simulateDelay = useCallback((ms: number = 300) => {
+    const isMobile =
+      typeof window !== 'undefined' &&
+      window.navigator.userAgent.match(/Android|iPhone|iPad|iPod|Mobile/i);
+    const adjustedMs = isMobile ? Math.min(ms, 200) : ms;
+    return new Promise(resolve => setTimeout(resolve, adjustedMs));
   }, []);
 
-  const filterByCategory = useCallback(
+  const getProductsByCategory = useCallback(
     (category: Category) => {
-      setProducts(category === 'all' ? all : all.filter(p => p.category === category));
+      if (category === 'all') return allProducts;
+      return allProducts.filter(p => p.category === category);
     },
-    [all],
+    [allProducts],
   );
 
-  const getProductById = useCallback((id: string) => {
-    abortCtrl.current?.abort();
-    abortCtrl.current = new AbortController();
-    setIsLoading(true);
-    fetch(`/api/products/${id}`, { signal: abortCtrl.current.signal })
-      .then(res => {
-        if (res.status === 404) throw new Error('Producto no encontrado');
-        if (!res.ok) throw new Error('Error al obtener producto');
-        return res.json() as Promise<Product>;
-      })
-      .then(p => {
-        setProduct(p);
-        setError(null);
-      })
-      .catch(err => {
-        if (err.name !== 'AbortError') {
-          setProduct(null);
-          setError(err.message);
-        }
-      })
-      .finally(() => setIsLoading(false));
-  }, []);
+  useEffect(() => {
+    let isMounted = true;
 
-  return { products, product, isLoading, error, filterByCategory, getProductById };
+    const initializeProducts = async () => {
+      if (filteredProducts.length > 0) return;
+
+      setIsLoading(true);
+      try {
+        await simulateDelay();
+        if (isMounted) {
+          setFilteredProducts(allProducts);
+          setError(null);
+        }
+      } catch {
+        if (isMounted) {
+          setError('Error al cargar productos');
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    initializeProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [allProducts, filteredProducts.length, simulateDelay]);
+
+  const filterByCategory = useCallback(
+    async (category: Category) => {
+      setIsLoading(true);
+      try {
+        await simulateDelay(200);
+        setFilteredProducts(getProductsByCategory(category));
+        setError(null);
+      } catch {
+        setError('Error al filtrar productos');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [getProductsByCategory, simulateDelay],
+  );
+
+  const getProductById = useCallback(
+    async (id: string) => {
+      if (selectedProduct?.id === id) return;
+      setIsLoading(true);
+      try {
+        await simulateDelay(200);
+        const product = allProducts.find(p => p.id === id);
+        if (product) {
+          setSelectedProduct(product);
+          setError(null);
+        } else {
+          setError('Producto no encontrado');
+        }
+      } catch {
+        setError('Error al buscar el producto');
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [allProducts, selectedProduct, simulateDelay],
+  );
+
+  return {
+    products: filteredProducts,
+    product: selectedProduct,
+    isLoading,
+    error,
+    filterByCategory,
+    getProductById,
+  };
 }
