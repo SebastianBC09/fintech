@@ -1,87 +1,67 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Product } from '@/types/product';
 import { Category } from '@/types/category';
-import { products as mockProducts } from '@/data/Products';
 
 export default function useProducts() {
-  const allProducts = mockProducts;
-
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [all, setAll] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
-  const simulateDelay = (ms: number = 800) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  };
+  const abortCtrl = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    const initializeProducts = async () => {
-      setIsLoading(true);
-      try {
-        await simulateDelay();
-        setFilteredProducts(allProducts);
+    abortCtrl.current = new AbortController();
+    setIsLoading(true);
+    fetch('/api/products', { signal: abortCtrl.current.signal })
+      .then(res => {
+        if (!res.ok) throw new Error('Error cargando productos');
+        return res.json() as Promise<Product[]>;
+      })
+      .then(data => {
+        setAll(data);
+        setProducts(data);
         setError(null);
-      } catch {
-        setError('Error al cargar productos');
-      } finally {
-        setIsLoading(false);
-      }
+      })
+      .catch(err => {
+        if (err.name !== 'AbortError') setError(err.message);
+      })
+      .finally(() => setIsLoading(false));
+    return () => {
+      abortCtrl.current?.abort();
     };
+  }, []);
 
-    initializeProducts().catch(() => {
-      setError('Error al inicializar productos');
-      setIsLoading(false);
-    });
-  }, [allProducts]);
+  const filterByCategory = useCallback(
+    (category: Category) => {
+      setProducts(category === 'all' ? all : all.filter(p => p.category === category));
+    },
+    [all],
+  );
 
-  const filterByCategory = async (category: Category) => {
+  const getProductById = useCallback((id: string) => {
+    abortCtrl.current?.abort();
+    abortCtrl.current = new AbortController();
     setIsLoading(true);
-
-    try {
-      await simulateDelay(500);
-
-      if (category === 'all') {
-        setFilteredProducts(allProducts);
-      } else {
-        setFilteredProducts(allProducts.filter(p => p.category === category));
-      }
-      setError(null);
-    } catch {
-      setError('Error al filtrar productos');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const getProductById = async (id: string) => {
-    setIsLoading(true);
-    setSelectedProduct(null);
-
-    try {
-      await simulateDelay(600);
-
-      const product = allProducts.find(p => p.id === id);
-      if (product) {
-        setSelectedProduct(product);
+    fetch(`/api/products/${id}`, { signal: abortCtrl.current.signal })
+      .then(res => {
+        if (res.status === 404) throw new Error('Producto no encontrado');
+        if (!res.ok) throw new Error('Error al obtener producto');
+        return res.json() as Promise<Product>;
+      })
+      .then(p => {
+        setProduct(p);
         setError(null);
-      } else {
-        setError('Producto no encontrado');
-      }
-    } catch {
-      setError('Error al buscar el producto');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      })
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          setProduct(null);
+          setError(err.message);
+        }
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
-  return {
-    products: filteredProducts,
-    product: selectedProduct,
-    isLoading,
-    error,
-    filterByCategory,
-    getProductById,
-  };
+  return { products, product, isLoading, error, filterByCategory, getProductById };
 }
