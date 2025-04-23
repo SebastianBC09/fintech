@@ -1,54 +1,84 @@
-import React, { KeyboardEvent } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
+import { Category, categoryLabels } from '@/types/category';
 
 interface TabFilterProps {
-  tabs: { id: string; label: string }[];
-  selectedId: string;
-  onSelect: (id: string) => void;
+  selected: Category;
+  onSelect: (category: Category) => void;
 }
 
-const TabList = styled.div`
-  display: flex;
-  border-bottom: 1px solid #E0E0E0;
-  overflow-x: auto;
-`;
-const TabBtn = styled.button<{ selected: boolean }>`
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid ${({ selected }) => (selected ? '#0F4C81' : 'transparent')};
-  color: ${({ selected }) => (selected ? '#0F4C81' : '#424242')};
-  cursor: pointer;
-  &:focus { outline: none; box-shadow: 0 0 0 2px rgba(15,76,129,0.5); }
+const TabsContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding: 0.25rem;
+    margin: 1rem 0;
+
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    
+    @media (max-width: 768px) {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-bottom: 0.5rem;
+    }
 `;
 
-export const TabFilter: React.FC<TabFilterProps> = ({ tabs, selectedId, onSelect }) => {
-  const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>, idx: number) => {
-    if (e.key === 'ArrowRight') {
-      const next = (idx + 1) % tabs.length;
-      onSelect(tabs[next].id);
-    } else if (e.key === 'ArrowLeft') {
-      const prev = (idx - 1 + tabs.length) % tabs.length;
-      onSelect(tabs[prev].id);
+const Tab = styled.button<{ $isActive: boolean }>`
+    background: ${props => props.$isActive
+            ? 'linear-gradient(135deg, #0F4C81 0%, #1A365D 100%)'
+            : 'white'};
+    color: ${props => props.$isActive ? 'white' : '#535353'};
+    border: 1px solid ${props => props.$isActive ? 'transparent' : 'rgba(15, 76, 129, 0.15)'};
+    border-radius: 12px;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    box-shadow: ${props => props.$isActive
+            ? '0 4px 12px rgba(15, 76, 129, 0.2)'
+            : '0 2px 4px rgba(0, 0, 0, 0.05)'};
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(15, 76, 129, 0.15);
+        background: ${props => props.$isActive
+                ? 'linear-gradient(135deg, #0F4C81 0%, #1A365D 100%)'
+                : 'rgba(15, 76, 129, 0.05)'};
     }
-  };
+
+    &:active {
+        transform: translateY(0);
+    }
+    
+    @media (max-width: 768px) {
+        padding: 0.6rem 1.2rem;
+        min-width: auto;
+    }
+`;
+
+export const TabFilter: FC<TabFilterProps> = ({ selected, onSelect }) => {
+  const categories = Object.keys(categoryLabels) as Category[];
+
   return (
-    <TabList role="tablist">
-      {tabs.map((tab, idx) => (
-        <TabBtn
-          key={tab.id}
+    <TabsContainer>
+      {categories.map((category) => (
+        <Tab
+          key={category}
+          $isActive={category === selected}
+          onClick={() => onSelect(category)}
+          aria-selected={category === selected}
           role="tab"
-          id={`tab-${tab.id}`}
-          selected={tab.id === selectedId}
-          aria-selected={tab.id === selectedId}
-          aria-controls={`panel-${tab.id}`}
-          onClick={() => onSelect(tab.id)}
-          onKeyDown={(e) => handleKeyDown(e, idx)}
         >
-          {tab.label}
-        </TabBtn>
+          {categoryLabels[category]}
+        </Tab>
       ))}
-    </TabList>
+    </TabsContainer>
   );
 };
