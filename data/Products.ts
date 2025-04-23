@@ -14,7 +14,7 @@ export const products: Product[] = [
       'App móvil avanzada',
       'Tarjeta débito sin costo'
     ],
-    imageUrl: '/icons/account.svg',
+    iconName: 'Bank',
     isNew: true,
     details: {
       minimumAmount: 0,
@@ -35,7 +35,7 @@ export const products: Product[] = [
       'Seguro de viaje',
       'Tarjeta débito premium'
     ],
-    imageUrl: '/icons/premium-account.svg',
+    iconName: 'CurrencyCircleDollar',
     details: {
       minimumAmount: 50000,
       fees: ['Sin comisión por transferencias internacionales', 'Sin comisión por retiros en cajeros globales'],
@@ -55,7 +55,7 @@ export const products: Product[] = [
       'Descuentos en restaurantes selectos',
       'Sin anualidad el primer año'
     ],
-    imageUrl: '/icons/gold-card.svg',
+    iconName: 'CreditCard',
     details: {
       minimumAmount: 25000,
       fees: ['Anualidad: $1,200 después del primer año', 'Interés moratorio: 59.9% anual'],
@@ -75,7 +75,7 @@ export const products: Product[] = [
       'Acceso a más de 1,200 salas VIP en aeropuertos',
       'Seguro de viaje premium'
     ],
-    imageUrl: '/icons/platinum-card.svg',
+    iconName: 'CreditCard',
     isPromoted: true,
     details: {
       minimumAmount: 50000,
@@ -97,7 +97,7 @@ export const products: Product[] = [
       'Rendimientos históricos por encima de inflación',
       'Rebalanceo automático de cartera'
     ],
-    imageUrl: '/icons/investment-moderate.svg',
+    iconName: 'ChartLineUp',
     details: {
       minimumAmount: 10000,
       term: 'Recomendado mínimo 2 años',
@@ -123,7 +123,7 @@ export const products: Product[] = [
       'Gestión activa por expertos',
       'Informes trimestrales detallados'
     ],
-    imageUrl: '/icons/investment-aggressive.svg',
+    iconName: 'ChartLineUp',
     details: {
       minimumAmount: 25000,
       term: 'Recomendado mínimo 5 años',
@@ -149,7 +149,7 @@ export const products: Product[] = [
       'Disponibilidad a 24 horas',
       'Sin comisiones por retiro'
     ],
-    imageUrl: '/icons/investment-conservative.svg',
+    iconName: 'ChartLineUp',
     isPromoted: true,
     details: {
       minimumAmount: 5000,
@@ -174,7 +174,7 @@ export const products: Product[] = [
       'Fondo de ahorro con rendimiento',
       'Asistencia funeraria'
     ],
-    imageUrl: '/icons/life-insurance.svg',
+    iconName: 'ShieldCheck',
     details: {
       minimumAmount: 500,
       term: 'Contrato anual renovable',
@@ -194,7 +194,7 @@ export const products: Product[] = [
       'Atención en el extranjero',
       'Consultas ilimitadas'
     ],
-    imageUrl: '/icons/health-insurance.svg',
+    iconName: 'ShieldCheck',
     isNew: true,
     details: {
       minimumAmount: 1500,
@@ -216,7 +216,7 @@ export const products: Product[] = [
       'Plazo hasta 60 meses',
       'Sin comisión por apertura'
     ],
-    imageUrl: '/icons/personal-loan.svg',
+    iconName: 'HouseLine',
     details: {
       minimumAmount: 10000,
       term: 'De 12 a 60 meses',
@@ -237,7 +237,7 @@ export const products: Product[] = [
       'Plazo hasta 20 años',
       'Seguimiento digital de tu solicitud'
     ],
-    imageUrl: '/icons/mortgage.svg',
+    iconName: 'HouseLine',
     isPromoted: true,
     details: {
       minimumAmount: 500000,
