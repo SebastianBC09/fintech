@@ -1,11 +1,11 @@
 # FinTech Landing
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.3.1-blue)](https://nextjs.org/)  
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)  
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-cyan)](https://tailwindcss.com/)  
-[![Styled Components](https://img.shields.io/badge/Styled–Components-5.x-purple)](https://styled-components.com/)  
-[![Framer Motion](https://img.shields.io/badge/Framer–Motion-10.x-magenta)](https://www.framer.com/motion/)  
-[![Phosphor Icons](https://img.shields.io/badge/Phosphor–React-1.x-green)](https://phosphoricons.com/)  
+[![Next.js](https://img.shields.io/badge/Next.js-15.3.1-blue)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-cyan)](https://tailwindcss.com/)
+[![Styled Components](https://img.shields.io/badge/Styled–Components-5.x-purple)](https://styled-components.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer–Motion-10.x-magenta)](https://www.framer.com/motion/)
+[![Phosphor Icons](https://img.shields.io/badge/Phosphor–React-1.x-green)](https://phosphoricons.com/)
 
 Landing page para fintech o banco digital con catálogo de productos financieros, filtros, detalle de cada producto, y un diseño profesional, accesible y “mobile-first”.
 
