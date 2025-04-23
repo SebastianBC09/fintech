@@ -1,14 +1,14 @@
-'use client'
-import { useEffect } from 'react'
-import Link from 'next/link'
-import { useParams } from 'next/navigation'
-import { motion } from 'framer-motion'
-import styled from 'styled-components'
-import useProducts from '@/hooks/useProducts'
-import { LoadingState } from '@/components/common/LoadingState'
-import { Notification } from '@/components/common/Notification'
-import { RiskIndicator } from '@/components/common/RiskIndicator'
-import { categoryLabels } from '@/types/category'
+'use client';
+import { useEffect } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
+import useProducts from '@/hooks/useProducts';
+import { LoadingState } from '@/components/common/LoadingState';
+import { Notification } from '@/components/common/Notification';
+import { RiskIndicator } from '@/components/common/RiskIndicator';
+import { categoryLabels } from '@/types/category';
 import {
   ArrowLeft,
   Bank,
@@ -16,7 +16,7 @@ import {
   CreditCard,
   ChartLineUp,
   ShieldCheck,
-  HouseLine
+  HouseLine,
 } from 'phosphor-react';
 
 const iconMap = {
@@ -36,7 +36,7 @@ const PageContainer = styled(motion.div)`
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem;
-  
+
   @media (max-width: 768px) {
     padding: 1rem;
   }
@@ -46,21 +46,21 @@ const BreadcrumbNav = styled.div`
   display: flex;
   align-items: center;
   font-size: 0.9rem;
-  color: #6B7280;
+  color: #6b7280;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
-  
+
   a {
-    color: #0F4C81;
+    color: #0f4c81;
     text-decoration: none;
     transition: color 0.2s;
-    
+
     &:hover {
-      color: #1A365D;
+      color: #1a365d;
       text-decoration: underline;
     }
   }
-  
+
   span {
     margin: 0 0.5rem;
   }
@@ -70,7 +70,7 @@ const ProductContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 2rem;
-  
+
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
   }
@@ -93,7 +93,7 @@ const IconWrapper = styled(motion.div)`
   box-shadow: 0 10px 25px rgba(15, 76, 129, 0.08);
   overflow: hidden;
   position: relative;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -104,7 +104,7 @@ const IconWrapper = styled(motion.div)`
     background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), transparent 70%);
     pointer-events: none;
   }
-  
+
   @media (max-width: 768px) {
     aspect-ratio: 16/10;
   }
@@ -113,9 +113,9 @@ const IconWrapper = styled(motion.div)`
 const ProductTitle = styled.h1`
   font-size: 2rem;
   font-weight: 700;
-  color: #1A202C;
+  color: #1a202c;
   margin: 0 0 0.5rem 0;
-  
+
   @media (max-width: 768px) {
     font-size: 1.75rem;
   }
@@ -123,7 +123,7 @@ const ProductTitle = styled.h1`
 
 const ProductDescription = styled.p`
   font-size: 1rem;
-  color: #4A5568;
+  color: #4a5568;
   margin-bottom: 1rem;
   line-height: 1.6;
 `;
@@ -140,26 +140,26 @@ const Tag = styled.span<{ $variant?: 'new' | 'promoted' | 'category' }>`
   border-radius: 2rem;
   font-size: 0.75rem;
   font-weight: 600;
-  
+
   ${props => {
-  switch (props.$variant) {
-    case 'new':
-      return `
+    switch (props.$variant) {
+      case 'new':
+        return `
           background-color: rgba(15, 76, 129, 0.1);
           color: #0F4C81;
         `;
-    case 'promoted':
-      return `
+      case 'promoted':
+        return `
           background-color: rgba(76, 175, 80, 0.1);
           color: #388E3C;
         `;
-    default:
-      return `
+      default:
+        return `
           background-color: rgba(160, 174, 192, 0.1);
           color: #4A5568;
         `;
-  }
-}}
+    }
+  }}
 `;
 
 const DetailsContainer = styled.div`
@@ -169,12 +169,12 @@ const DetailsContainer = styled.div`
 `;
 
 const Card = styled(motion.div)`
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  
+
   @media (max-width: 768px) {
     padding: 1.25rem;
   }
@@ -183,7 +183,7 @@ const Card = styled(motion.div)`
 const CardTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1A202C;
+  color: #1a202c;
   margin: 0 0 1rem 0;
 `;
 
@@ -191,12 +191,12 @@ const DetailsList = styled.ul`
   list-style-type: disc;
   margin: 0;
   padding-left: 1.5rem;
-  
+
   li {
     margin-bottom: 0.5rem;
-    color: #4A5568;
+    color: #4a5568;
     line-height: 1.5;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -205,7 +205,7 @@ const DetailsList = styled.ul`
 
 const DetailItem = styled.div`
   margin-bottom: 1rem;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -214,29 +214,29 @@ const DetailItem = styled.div`
 const DetailLabel = styled.span`
   display: block;
   font-weight: 600;
-  color: #2D3748;
+  color: #2d3748;
   margin-bottom: 0.25rem;
 `;
 
 const DetailValue = styled.span`
-  color: #4A5568;
+  color: #4a5568;
 `;
 
 const BackLink = styled(motion.div)`
   display: flex;
   justify-content: center;
   margin-top: 2.5rem;
-  
+
   a {
     display: inline-flex;
     align-items: center;
-    color: #0F4C81;
+    color: #0f4c81;
     font-weight: 600;
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     transition: all 0.2s ease;
-    
+
     &:hover {
       background-color: rgba(15, 76, 129, 0.05);
       transform: translateY(-2px);
@@ -248,7 +248,7 @@ const DetailsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
@@ -259,13 +259,13 @@ const FullWidthDetail = styled.div`
 `;
 
 export default function ProductPage() {
-  const params = useParams()
-  let id: string | undefined
+  const params = useParams();
+  let id: string | undefined;
   if (typeof params.id === 'string') {
-    id = params.id
+    id = params.id;
   }
 
-  const { getProductById, product, isLoading, error } = useProducts()
+  const { getProductById, product, isLoading, error } = useProducts();
 
   useEffect(() => {
     if (id) getProductById(id);
@@ -277,15 +277,12 @@ export default function ProductPage() {
     return <Notification type="error" message="Producto no encontrado." />;
   }
 
-  const iconName = product.iconName && product.iconName in iconMap ? product.iconName : DEFAULT_ICON;
+  const iconName =
+    product.iconName && product.iconName in iconMap ? product.iconName : DEFAULT_ICON;
   const Icon = iconMap[iconName as IconName];
 
   return (
-    <PageContainer
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-    >
+    <PageContainer initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
       <BreadcrumbNav>
         <Link href="/">Inicio</Link>
         <span>/</span>
@@ -417,5 +414,5 @@ export default function ProductPage() {
         </Link>
       </BackLink>
     </PageContainer>
-  )
+  );
 }

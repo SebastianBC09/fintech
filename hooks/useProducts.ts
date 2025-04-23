@@ -45,7 +45,7 @@ export default function useProducts() {
       if (category === 'all') {
         setFilteredProducts(allProducts);
       } else {
-        setFilteredProducts(allProducts.filter((p) => p.category === category));
+        setFilteredProducts(allProducts.filter(p => p.category === category));
       }
       setError(null);
     } catch {
@@ -62,7 +62,7 @@ export default function useProducts() {
     try {
       await simulateDelay(600);
 
-      const product = allProducts.find((p) => p.id === id);
+      const product = allProducts.find(p => p.id === id);
       if (product) {
         setSelectedProduct(product);
         setError(null);

@@ -14,11 +14,11 @@ const MainContent = styled.main`
   max-width: 1440px;
   margin: 0 auto;
   width: 100%;
-  
+
   @media (min-width: 768px) {
     padding: 2.5rem 2.5rem;
   }
-  
+
   @media (min-width: 1024px) {
     padding: 3rem 3rem;
   }
@@ -28,16 +28,14 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #FAFAFA, #FFFFFF);
+  background: linear-gradient(to bottom, #fafafa, #ffffff);
 `;
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <PageWrapper>
       <Header />
-      <MainContent>
-        {children}
-      </MainContent>
+      <MainContent>{children}</MainContent>
       <Footer />
     </PageWrapper>
   );

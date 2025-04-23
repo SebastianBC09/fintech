@@ -24,35 +24,35 @@ const colorMap: Record<RiskLevel, string> = {
 };
 
 const ContainerRI = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
 `;
 
 const Bars = styled.div`
-    display: flex;
-    gap: 0.25rem;
-    position: relative;
+  display: flex;
+  gap: 0.25rem;
+  position: relative;
 `;
 
 const Bar = styled.div<{ $filled: boolean; $color: string }>`
-    width: 0.375rem;
-    height: ${props => props.$filled ? '1.75rem' : '1.5rem'};
-    background-color: ${({ $filled, $color }) => ($filled ? $color : 'rgba(224, 224, 224, 0.5)')};
-    border-radius: 2px;
-    transition: all 0.2s ease;
-    position: relative;
-    bottom: ${props => props.$filled ? '0.125rem' : '0'};
-    box-shadow: ${props => props.$filled ? '0 2px 4px rgba(0, 0, 0, 0.1)' : 'none'};
+  width: 0.375rem;
+  height: ${props => (props.$filled ? '1.75rem' : '1.5rem')};
+  background-color: ${({ $filled, $color }) => ($filled ? $color : 'rgba(224, 224, 224, 0.5)')};
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  position: relative;
+  bottom: ${props => (props.$filled ? '0.125rem' : '0')};
+  box-shadow: ${props => (props.$filled ? '0 2px 4px rgba(0, 0, 0, 0.1)' : 'none')};
 `;
 
 const TextRI = styled.span<{ $color: string }>`
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: ${props => props.$color};
-    position: relative;
-    transition: color 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: ${props => props.$color};
+  position: relative;
+  transition: color 0.2s ease;
 `;
 
 const LabelRI = styled.div`
