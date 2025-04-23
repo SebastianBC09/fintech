@@ -1,36 +1,83 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '@/types/product';
 import { Category } from '@/types/category';
 import { products as mockProducts } from '@/data/Products';
 
 export default function useProducts() {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [filtered, setFiltered] = useState<Product[]>(mockProducts);
-  const [isLoading, setIsLoading] = useState(false);
+  const allProducts = mockProducts;
+
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const filterByCategory = (category: Category) => {
-    if (category === 'all') return setFiltered(products);
-    setFiltered(products.filter((p) => p.category === category));
+  const simulateDelay = (ms: number = 800) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
   };
 
-  const getProductById = (id: string) => {
+  useEffect(() => {
+    const initializeProducts = async () => {
+      setIsLoading(true);
+      try {
+        await simulateDelay();
+        setFilteredProducts(allProducts);
+        setError(null);
+      } catch {
+        setError('Error al cargar productos');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeProducts().catch(() => {
+      setError('Error al inicializar productos');
+      setIsLoading(false);
+    });
+  }, [allProducts]);
+
+  const filterByCategory = async (category: Category) => {
     setIsLoading(true);
-    const product = products.find((p) => p.id === id);
-    if (product) {
-      setSelectedProduct(product);
+
+    try {
+      await simulateDelay(500);
+
+      if (category === 'all') {
+        setFilteredProducts(allProducts);
+      } else {
+        setFilteredProducts(allProducts.filter((p) => p.category === category));
+      }
       setError(null);
-    } else {
-      setError('Producto no encontrado');
-      setSelectedProduct(null);
+    } catch {
+      setError('Error al filtrar productos');
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
+  };
+
+  const getProductById = async (id: string) => {
+    setIsLoading(true);
+    setSelectedProduct(null);
+
+    try {
+      await simulateDelay(600);
+
+      const product = allProducts.find((p) => p.id === id);
+      if (product) {
+        setSelectedProduct(product);
+        setError(null);
+      } else {
+        setError('Producto no encontrado');
+      }
+    } catch {
+      setError('Error al buscar el producto');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {
-    products: filtered,
+    products: filteredProducts,
     product: selectedProduct,
     isLoading,
     error,
