@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { products } from '@/data/Products';
+import { type NextRequest } from 'next/server';
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const item = products.find(p => p.id === params.id);
     if (!item) {
