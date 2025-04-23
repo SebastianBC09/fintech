@@ -11,7 +11,7 @@ export interface Product {
   interestRate?: number;
   riskLevel?: RiskLevel;
   benefits: string[];
-  imageUrl: string;
+  iconName: string;
   isPromoted?: boolean;
   isNew?: boolean;
   details?: {
@@ -24,12 +24,4 @@ export interface Product {
     labels: string[];
     values: number[];
   };
-}
-
-export interface ProductsState {
-  products: Product[];
-  filteredProducts: Product[];
-  selectedCategory: Category | 'all';
-  isLoading: boolean;
-  error: string | null;
 }
