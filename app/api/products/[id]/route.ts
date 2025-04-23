@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import { products } from '@/data/Products';
 
-export async function GET(request: Request, context: { params: { id: string } }) {
-  const { id } = context.params;
-  const item = products.find(p => p.id === id) || null;
-  if (!item) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+export async function GET(_: Request, { params }: { params: { id: string } }) {
+  try {
+    const item = products.find(p => p.id === params.id);
+    if (!item) {
+      return NextResponse.json({ error: 'Producto no encontrado' }, { status: 404 });
+    }
+    return NextResponse.json(item);
+  } catch (error) {
+    console.error(`Error al obtener el producto con ID ${params.id}:`, error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-  return NextResponse.json(item);
 }
